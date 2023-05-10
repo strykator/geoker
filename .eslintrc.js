@@ -8,6 +8,7 @@ module.exports = {
     'max-len': ['error', {code: 80}],
     'no-console': 1,
     'react-hooks/exhaustive-deps': 1,
+    'react-native/no-inline-styles': 0,
   },
   overrides: [
     {

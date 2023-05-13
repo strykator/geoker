@@ -98,11 +98,11 @@ const Home = () => {
       showPermissionErrorMessage()
       return false
     }
-    const background = await Location.requestBackgroundPermissionsAsync()
-    if (background.status !== 'granted') {
-      showPermissionErrorMessage()
-      return false
-    }
+    // const background = await Location.requestBackgroundPermissionsAsync()
+    // if (background.status !== 'granted') {
+    //   showPermissionErrorMessage()
+    //   return false
+    // }
     return true
   }
 
@@ -110,11 +110,11 @@ const Home = () => {
     setStop(false)
     setStart(new Date().getTime())
     location.current = null
-    const background = await Location.requestBackgroundPermissionsAsync()
-    if (background.status !== 'granted') {
-      showPermissionErrorMessage()
-      return
-    }
+    // const background = await Location.requestBackgroundPermissionsAsync()
+    // if (background.status !== 'granted') {
+    //   showPermissionErrorMessage()
+    //   return
+    // }
 
     const currentLocation = await getCurrentLocation()
     setStartLocation(currentLocation)

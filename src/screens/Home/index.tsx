@@ -59,6 +59,7 @@ const Home = () => {
   TaskManager.defineTask(TASK_NAME, ({data: {locations}, error}: any) => {
     if (error) {
       // check `error.message` for more details.
+      setUpdate(JSON.stringify(error))
       return
     }
 

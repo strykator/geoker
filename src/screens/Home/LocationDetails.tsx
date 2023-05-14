@@ -25,10 +25,10 @@ const LocationDetails = (props: ILocationDetails) => {
           props.location?.coords?.heading || 0
         } degree`}</Text>
         <Text style={styles.text}>{`${
-          props.location?.coords?.longitude || 0
+          formatNumberDigits(props.location?.coords?.longitude, 5) || 0
         } degree`}</Text>
         <Text style={styles.text}>{`${
-          props.location?.coords?.latitude || 0
+          formatNumberDigits(props.location?.coords?.latitude, 5) || 0
         } degree`}</Text>
         <Text style={styles.text}>
           {formatNumberDigits(props.distance, 1)} miles

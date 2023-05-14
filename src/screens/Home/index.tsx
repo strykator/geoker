@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {View, StyleSheet} from 'react-native'
+import {View, StyleSheet, Text} from 'react-native'
 import getDistance from 'geolib/es/getDistance'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
@@ -19,6 +19,7 @@ import {getCurrentLocation} from './utils'
 import Speedometer from './Speedometer'
 import LocationDetails from './LocationDetails'
 import FavoriteModal from './FavoriteModal'
+import Map from '../../components/Map'
 
 const {fullHeight, fullWidth} = screenSize
 
@@ -47,7 +48,7 @@ const showPermissionErrorMessage = () => {
 }
 
 const Home = () => {
-  const [, setUpdate] = useState({})
+  const [update, setUpdate] = useState({})
   const [start, setStart] = useState(moment().valueOf())
   const [stop, setStop] = useState(true)
   const [isModalVisible, setModalVisible] = useState(false)
@@ -243,11 +244,13 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
+      <Map location={location.current?.coords} />
       <Speedometer speed={stop ? 0 : location.current?.coords?.speed || 0} />
       <LocationDetails
         location={location.current}
         distance={distance.current}
       />
+      <Text>{JSON.stringify(update || 'nothing')}</Text>
       <View style={styles.btnGroup}>
         <Button
           title="Start"

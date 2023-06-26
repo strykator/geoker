@@ -53,33 +53,34 @@ const Home = () => {
   const [stop, setStop] = useState(true)
   const [isModalVisible, setModalVisible] = useState(false)
   const [startLocation, setStartLocation] = useState<Location.LocationObject>()
+  const [intervalId, setIntervalId] = useState<any>(null)
   const location = useRef<Ilocation | null>(null)
   const distance = useRef(0)
 
-  TaskManager.defineTask(TASK_NAME, ({data: {locations}, error}: any) => {
-    if (error) {
-      // check `error.message` for more details.
-      setUpdate(JSON.stringify(error))
-      return
-    }
+  // TaskManager.defineTask(TASK_NAME, ({data: {locations}, error}: any) => {
+  //   if (error) {
+  //     // check `error.message` for more details.
+  //     setUpdate(JSON.stringify(error))
+  //     return
+  //   }
 
-    if (location.current && locations) {
-      const newDistance = getDistance(
-        {
-          lat: location.current?.coords?.latitude,
-          lon: location.current?.coords?.longitude,
-        },
-        {
-          lat: locations[0].coords?.latitude,
-          lon: locations[0].coords?.longitude,
-        },
-      )
-      distance.current = distance.current + meterToMile(newDistance)
-    }
-    location.current = locations[0]
-    // 2 cents to rerender screen
-    setUpdate(locations[0])
-  })
+  // if (location.current && locations) {
+  //   const newDistance = getDistance(
+  //     {
+  //       lat: location.current?.coords?.latitude,
+  //       lon: location.current?.coords?.longitude,
+  //     },
+  //     {
+  //       lat: locations[0].coords?.latitude,
+  //       lon: locations[0].coords?.longitude,
+  //     },
+  //   )
+  //   distance.current = distance.current + meterToMile(newDistance)
+  // }
+  // location.current = locations[0]
+  // // 2 cents to rerender screen
+  // setUpdate(locations[0])
+  // })
 
   useEffect(() => {
     ;(async () => {
@@ -93,6 +94,45 @@ const Home = () => {
       Location.stopLocationUpdatesAsync(TASK_NAME)
     }
   }, [])
+
+  useEffect(() => {
+    const getLocationAsync = async () => {
+      try {
+        const {status} = await Location.requestForegroundPermissionsAsync()
+
+        if (status !== 'granted') {
+          return
+        }
+
+        const id = setInterval(async () => {
+          const locationData = await Location.getCurrentPositionAsync({})
+          if (!stop) {
+            if (location.current && locationData) {
+              const newDistance = getDistance(
+                {
+                  lat: location.current?.coords?.latitude,
+                  lon: location.current?.coords?.longitude,
+                },
+                {
+                  lat: locationData.coords?.latitude,
+                  lon: locationData.coords?.longitude,
+                },
+              )
+              distance.current = distance.current + meterToMile(newDistance)
+            }
+            location.current = locationData
+            // 2 cents to rerender screen
+            setUpdate(locationData)
+          }
+        }, 3000) // Update location every 3 seconds
+        setIntervalId(id)
+      } catch (error) {
+        console.log('Error getting location:', error)
+      }
+    }
+
+    getLocationAsync()
+  }, [stop])
 
   const requestPermission = async () => {
     const foregound = await Location.requestForegroundPermissionsAsync()
@@ -141,7 +181,9 @@ const Home = () => {
   // Stop location tracking in background
   const stopBackgroundTracking = async () => {
     setStop(true)
-
+    if (intervalId) {
+      clearInterval(intervalId)
+    }
     const lastLocation = await getCurrentLocation()
 
     storeData(distance.current, lastLocation)

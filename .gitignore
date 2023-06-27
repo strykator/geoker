@@ -69,3 +69,4 @@ buck-out/
 #expo
 .expo
 /dist
+app.json

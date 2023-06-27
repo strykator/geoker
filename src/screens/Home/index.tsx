@@ -7,6 +7,9 @@ import * as Linking from 'expo-linking'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import Toast from 'react-native-toast-message'
+import {useDispatch, useSelector} from 'react-redux'
+import {RootState} from '../../store'
+import {updateGeo, resetGeo} from '../../store/geo/geoSlice'
 import Button from '../../components/Button'
 import {fonts, colors, screenSize} from '../../styles'
 import {
@@ -58,6 +61,8 @@ const Home = () => {
   const [multiplier, setMultiplier] = useState<number>(2)
   const location = useRef<Ilocation | null>(null)
   const distance = useRef(0)
+  const appState = useSelector((state: RootState) => state)
+  const dispatch = useDispatch()
 
   // TaskManager.defineTask(TASK_NAME, ({data: {locations}, error}: any) => {
   //   if (error) {
@@ -122,6 +127,16 @@ const Home = () => {
             location.current = locationData
             // 2 cents to rerender screen
             setUpdate(locationData)
+            if (locationData.coords?.latitude) {
+              dispatch(
+                updateGeo({
+                  latitude: locationData.coords.latitude,
+                  longitude: locationData.coords.longitude,
+                  speed: locationData.coords.speed ?? 0,
+                  heading: locationData.coords.heading ?? 0,
+                }),
+              )
+            }
           }
         }, 2000) // Update location every 3 seconds
         setIntervalId(id)
@@ -182,6 +197,7 @@ const Home = () => {
     setStop(true)
     if (intervalId) {
       clearInterval(intervalId)
+      dispatch(resetGeo())
     }
     const lastLocation = await getCurrentLocation()
 

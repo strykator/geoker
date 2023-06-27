@@ -5,6 +5,8 @@ import {ActionSheetProvider} from '@expo/react-native-action-sheet'
 import Toast, {BaseToast} from 'react-native-toast-message'
 import {useFonts} from 'expo-font'
 import {StatusBar} from 'expo-status-bar'
+import {Provider} from 'react-redux'
+import {store} from './src/store'
 //import SplashScreen from 'react-native-splash-screen'
 import {colors, fontSize, fonts, screenSize} from './src/styles'
 
@@ -93,12 +95,14 @@ const App = () => {
   return (
     <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
       <StatusBar />
-      <ActionSheetProvider>
-        <>
-          <BottomTabNavigator />
-          <Toast config={toastConfig} />
-        </>
-      </ActionSheetProvider>
+      <Provider store={store}>
+        <ActionSheetProvider>
+          <>
+            <BottomTabNavigator />
+            <Toast config={toastConfig} />
+          </>
+        </ActionSheetProvider>
+      </Provider>
     </SafeAreaView>
   )
 }

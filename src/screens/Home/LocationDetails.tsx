@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native'
 import {fonts, colors, screenSize} from '../../styles'
 import {formatNumberDigits} from '../../utils/helpers'
 import {type Ilocation} from './index'
+import {calculateDirection} from './utils'
 
 const {fullHeight} = screenSize
 
@@ -23,7 +24,7 @@ const LocationDetails = (props: ILocationDetails) => {
       <View style={styles.right}>
         <Text style={styles.text}>{`${
           props.location?.coords?.heading || 0
-        } degree`}</Text>
+        } degree ${calculateDirection(props.location?.coords?.heading)}`}</Text>
         <Text style={styles.text}>{`${
           formatNumberDigits(props.location?.coords?.longitude, 5) || 0
         } degree`}</Text>
@@ -49,13 +50,13 @@ const styles = StyleSheet.create({
     paddingVertical: fullHeight * 0.04,
   },
   left: {
-    width: '45%',
+    width: '35%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
   right: {
-    width: '45%',
+    width: '55%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-start',

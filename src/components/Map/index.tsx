@@ -8,15 +8,21 @@ import {screenSize} from '../../styles/size'
 import Button from '../Button'
 
 const Map = (props: any, children: any) => {
-  const [region, setRegion] = useState({
-    latitude: 37.32482594,
-    longitude: -122.01972075,
-    latitudeDelta: 0.1,
-    longitudeDelta: 0.08,
-  })
+  const [region, setRegion] = useState()
   const [navigating, setNavigating] = useState(false)
   const mapRef = useRef<MapView>(null)
   const {location} = props
+
+  useEffect(() => {
+    const reg = {
+      latitude: location?.latitude,
+      longitude: location?.longitude,
+      latitudeDelta: 0.009,
+      longitudeDelta: 0.005,
+    }
+    setRegion(reg)
+    mapRef?.current?.animateToRegion(reg, 1000)
+  }, [location])
 
   const handleRegionChange = (newRegion: any) => {
     setRegion(newRegion)
@@ -26,8 +32,8 @@ const Map = (props: any, children: any) => {
     const reg = {
       latitude: location?.latitude,
       longitude: location?.longitude,
-      latitudeDelta: 0.1,
-      longitudeDelta: 0.08,
+      latitudeDelta: 0.003,
+      longitudeDelta: 0.002,
     }
     mapRef?.current?.animateToRegion(reg, 1000)
   }
@@ -49,34 +55,33 @@ const Map = (props: any, children: any) => {
 
   return (
     <View style={styles.container}>
-      <MapView
-        ref={mapRef}
-        initialRegion={region}
-        showsUserLocation
-        followsUserLocation={true}
-        onRegionChange={handleRegionChange}
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}>
-        <Marker
-          coordinate={{
-            latitude: location?.latitude || 37.32482594,
-            longitude: location?.longitude || -122.01972075,
-          }}
-        />
-        {/*navigating && (
-          <MapViewDirections
-            origin={{latitude: 37.32482594, longitude: -122.01972075}}
-            destination={{
-              latitude: location?.latitude,
-              longitude: location?.longitude,
-            }}
-            apikey={Config.GOOGLE_MAPS_API_KEY}
-            strokeWidth={3}
-            strokeColor="hotpink"
-          />
+      {region && (
+        <>
+          <MapView
+            ref={mapRef}
+            initialRegion={region}
+            showsUserLocation
+            followsUserLocation={true}
+            onRegionChange={handleRegionChange}
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}>
+            <Marker coordinate={region} />
+            {/*navigating && (
+              <MapViewDirections
+                origin={{latitude: 37.32482594, longitude: -122.01972075}}
+                destination={{
+                  latitude: location?.latitude,
+                  longitude: location?.longitude,
+                }}
+                apikey={Config.GOOGLE_MAPS_API_KEY}
+                strokeWidth={3}
+                strokeColor="hotpink"
+              />
           )*/}
-      </MapView>
-      <Button title="CENTER" onPress={animateToRegion} style={styles.btn} />
+          </MapView>
+          <Button title="CENTER" onPress={animateToRegion} style={styles.btn} />
+        </>
+      )}
     </View>
   )
 }

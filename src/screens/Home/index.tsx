@@ -20,6 +20,7 @@ import Speedometer from './Speedometer'
 import LocationDetails from './LocationDetails'
 import FavoriteModal from './FavoriteModal'
 import Map from '../../components/Map'
+import {formatNumberDigits} from '../../utils/helpers'
 
 const {fullHeight, fullWidth} = screenSize
 
@@ -54,6 +55,7 @@ const Home = () => {
   const [isModalVisible, setModalVisible] = useState(false)
   const [startLocation, setStartLocation] = useState<Location.LocationObject>()
   const [intervalId, setIntervalId] = useState<any>(null)
+  const [multiplier, setMultiplier] = useState<number>(2)
   const location = useRef<Ilocation | null>(null)
   const distance = useRef(0)
 
@@ -98,11 +100,8 @@ const Home = () => {
   useEffect(() => {
     const getLocationAsync = async () => {
       try {
-        const {status} = await Location.requestForegroundPermissionsAsync()
-
-        if (status !== 'granted') {
-          return
-        }
+        const hasPermission = await requestPermission()
+        if (!hasPermission) return
 
         const id = setInterval(async () => {
           const locationData = await Location.getCurrentPositionAsync({})
@@ -124,7 +123,7 @@ const Home = () => {
             // 2 cents to rerender screen
             setUpdate(locationData)
           }
-        }, 3000) // Update location every 3 seconds
+        }, 2000) // Update location every 3 seconds
         setIntervalId(id)
       } catch (error) {
         console.log('Error getting location:', error)
@@ -162,20 +161,20 @@ const Home = () => {
     setStartLocation(currentLocation)
 
     // Don't track if it is already running in background
-    const hasStarted = await Location.hasStartedLocationUpdatesAsync(TASK_NAME)
-    if (hasStarted) return
+    // const hasStarted = await Location.hasStartedLocationUpdatesAsync(TASK_NAME)
+    // if (hasStarted) return
 
-    await Location.startLocationUpdatesAsync(TASK_NAME, {
-      showsBackgroundLocationIndicator: true,
-      accuracy: Location.Accuracy.BestForNavigation,
-      timeInterval: 5000,
-      distanceInterval: 5,
-      foregroundService: {
-        notificationTitle: 'Location',
-        notificationBody: 'Location tracking in background',
-        notificationColor: colors.background,
-      },
-    })
+    // await Location.startLocationUpdatesAsync(TASK_NAME, {
+    //   showsBackgroundLocationIndicator: true,
+    //   accuracy: Location.Accuracy.BestForNavigation,
+    //   timeInterval: 5000,
+    //   distanceInterval: 5,
+    //   foregroundService: {
+    //     notificationTitle: 'Location',
+    //     notificationBody: 'Location tracking in background',
+    //     notificationColor: colors.background,
+    //   },
+    // })
   }
 
   // Stop location tracking in background
@@ -187,10 +186,10 @@ const Home = () => {
     const lastLocation = await getCurrentLocation()
 
     storeData(distance.current, lastLocation)
-    const hasStarted = await Location.hasStartedLocationUpdatesAsync(TASK_NAME)
-    if (hasStarted) {
-      await Location.stopLocationUpdatesAsync(TASK_NAME)
-    }
+    // const hasStarted = await Location.hasStartedLocationUpdatesAsync(TASK_NAME)
+    // if (hasStarted) {
+    //   await Location.stopLocationUpdatesAsync(TASK_NAME)
+    // }
 
     reset()
   }
@@ -284,16 +283,34 @@ const Home = () => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible)
   }
-
+  const getSpeed = () => {
+    if (stop || !location.current?.coords?.speed) return 0
+    return location.current?.coords?.speed * multiplier
+  }
+  const increaseSpeedMutiplier = () => setMultiplier(multiplier + 0.1)
+  const decreaseSpeedMutiplier = () => setMultiplier(multiplier - 0.1)
+  // <Text>{JSON.stringify(update || 'nothing')}</Text>
   return (
     <View style={styles.container}>
       <Map location={location.current?.coords} />
-      <Speedometer speed={stop ? 0 : location.current?.coords?.speed || 0} />
+      <Speedometer speed={getSpeed()} />
       <LocationDetails
         location={location.current}
         distance={distance.current}
       />
-      <Text>{JSON.stringify(update || 'nothing')}</Text>
+      <View style={styles.btnGroup}>
+        <Button
+          title="increase"
+          onPress={increaseSpeedMutiplier}
+          style={styles.startBtn}
+        />
+        <Text>{formatNumberDigits(multiplier, 1)}</Text>
+        <Button
+          title="decrease"
+          onPress={decreaseSpeedMutiplier}
+          style={styles.stopBtn}
+        />
+      </View>
       <View style={styles.btnGroup}>
         <Button
           title="Start"
@@ -337,7 +354,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: fullHeight * 0.05,
+    marginVertical: fullHeight * 0.02,
   },
   startBtn: {
     backgroundColor: colors.success,

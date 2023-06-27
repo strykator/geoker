@@ -68,12 +68,14 @@ const SwipeableCard = ({item, removeItem}: ISwipeableCard) => {
         android: `${scheme}${latLng}(${label})`,
       }) || ''
     try {
-      const isGoogleMapInstalled = await Linking.canOpenURL('comgooglemaps://')
+      const isGoogleMapInstalled = await Linking.canOpenURL(
+        `https://www.google.com/maps/search/?api=1&query=${latLng}`,
+      )
       if (isGoogleMapInstalled)
         url = `https://www.google.com/maps/search/?api=1&query=${latLng}`
-    } catch (error) {}
 
-    Linking.openURL(url)
+      Linking.openURL(url.replace(/\s/g, '%20'))
+    } catch (error) {}
   }
 
   return (

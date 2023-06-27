@@ -51,21 +51,31 @@ const SwipeableCard = ({item, removeItem}: ISwipeableCard) => {
     swipeRef.current?.close()
   }
 
-  const navigate = (destination: {
+  const navigate = async (destination: {
     title: string
     latitude: number
     longitude: number
   }) => {
-    const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='})
+    const scheme = Platform.select({
+      ios: 'maps:0,0?q=',
+      android: 'geo:0,0?q=',
+    })
     const latLng = `${destination.latitude},${destination.longitude}`
     const label = destination.title
-    const url =
+    let url =
       Platform.select({
         ios: `${scheme}${label}@${latLng}`,
         android: `${scheme}${latLng}(${label})`,
       }) || ''
+    try {
+      const isGoogleMapInstalled = await Linking.canOpenURL(
+        `https://www.google.com/maps/search/?api=1&query=${latLng}`,
+      )
+      if (isGoogleMapInstalled)
+        url = `https://www.google.com/maps/search/?api=1&query=${latLng}`
 
-    Linking.openURL(url)
+      Linking.openURL(url.replace(/\s/g, '%20'))
+    } catch (error) {}
   }
 
   return (

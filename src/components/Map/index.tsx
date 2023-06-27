@@ -7,31 +7,46 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps'
 import {screenSize} from '../../styles/size'
 import Button from '../Button'
 
-const Map = (props: any, children: any) => {
+interface IMap {
+  coords: {
+    latitude: number
+    longitude: number
+    heading: number
+    speed: number
+  }
+  children?: React.ReactNode
+}
+
+const Map = ({coords, children}: IMap) => {
   const [region, setRegion] = useState()
   const [navigating, setNavigating] = useState(false)
   const mapRef = useRef<MapView>(null)
-  const {location} = props
+  const {latitude, longitude} = coords
 
   useEffect(() => {
+    if (!latitude) return
     const reg = {
-      latitude: location?.latitude,
-      longitude: location?.longitude,
+      latitude,
+      longitude,
       latitudeDelta: 0.009,
       longitudeDelta: 0.005,
     }
     setRegion(reg)
     mapRef?.current?.animateToRegion(reg, 1000)
-  }, [location])
+  }, [latitude, longitude])
 
   const handleRegionChange = (newRegion: any) => {
     setRegion(newRegion)
   }
 
+  if (!latitude) {
+    return <Text>Wating for GPS Coordinates...</Text>
+  }
+
   const animateToRegion = () => {
     const reg = {
-      latitude: location?.latitude,
-      longitude: location?.longitude,
+      latitude,
+      longitude,
       latitudeDelta: 0.003,
       longitudeDelta: 0.002,
     }
@@ -40,17 +55,10 @@ const Map = (props: any, children: any) => {
 
   const startNavigation = () => {
     setNavigating(true)
-    mapRef.current?.fitToCoordinates(
-      [{latitude: location?.latitude, longitude: location?.longitude}],
-      {
-        edgePadding: {top: 50, bottom: 50, left: 50, right: 50},
-        animated: true,
-      },
-    )
-  }
-
-  if (!location) {
-    return <Text>Loading Map...</Text>
+    mapRef.current?.fitToCoordinates([{latitude, longitude}], {
+      edgePadding: {top: 50, bottom: 50, left: 50, right: 50},
+      animated: true,
+    })
   }
 
   return (
@@ -61,7 +69,7 @@ const Map = (props: any, children: any) => {
             ref={mapRef}
             initialRegion={region}
             showsUserLocation
-            followsUserLocation={true}
+            followsUserLocation
             onRegionChange={handleRegionChange}
             style={styles.map}
             provider={PROVIDER_GOOGLE}>

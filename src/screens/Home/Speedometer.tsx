@@ -30,11 +30,11 @@ const Speedometer = ({speed = 0}: ISpeedometer) => {
 
   const animatedStyles = useAnimatedStyle(() => {
     let backgroundColor = colors.disabled
-    if (speed >= 1 && speed <= 30) {
+    if (speed >= 1 && speed <= 45) {
       backgroundColor = colors.success
-    } else if (speed > 30 && speed <= 50) {
+    } else if (speed > 45 && speed <= 65) {
       backgroundColor = colors.tomato
-    } else if (speed > 50) {
+    } else if (speed > 65) {
       backgroundColor = colors.warning
     }
 

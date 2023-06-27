@@ -7,9 +7,8 @@ import * as Linking from 'expo-linking'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import Toast from 'react-native-toast-message'
-import {useDispatch, useSelector} from 'react-redux'
-import {RootState} from '../../store'
-import {updateGeo, resetGeo} from '../../store/geo/geoSlice'
+import {useDispatch} from 'react-redux'
+import {updateGeo} from '../../store/geo/geoSlice'
 import Button from '../../components/Button'
 import {fonts, colors, screenSize} from '../../styles'
 import {
@@ -22,7 +21,6 @@ import {getCurrentLocation} from './utils'
 import Speedometer from './Speedometer'
 import LocationDetails from './LocationDetails'
 import FavoriteModal from './FavoriteModal'
-import Map from '../../components/Map'
 import {formatNumberDigits} from '../../utils/helpers'
 
 const {fullHeight, fullWidth} = screenSize
@@ -61,7 +59,7 @@ const Home = () => {
   const [multiplier, setMultiplier] = useState<number>(2)
   const location = useRef<Ilocation | null>(null)
   const distance = useRef(0)
-  const appState = useSelector((state: RootState) => state)
+  // const appState = useSelector((state: RootState) => state)
   const dispatch = useDispatch()
 
   // TaskManager.defineTask(TASK_NAME, ({data: {locations}, error}: any) => {
@@ -197,7 +195,6 @@ const Home = () => {
     setStop(true)
     if (intervalId) {
       clearInterval(intervalId)
-      dispatch(resetGeo())
     }
     const lastLocation = await getCurrentLocation()
 
@@ -308,7 +305,6 @@ const Home = () => {
   // <Text>{JSON.stringify(update || 'nothing')}</Text>
   return (
     <View style={styles.container}>
-      <Map location={location.current?.coords} />
       <Speedometer speed={getSpeed()} />
       <LocationDetails
         location={location.current}

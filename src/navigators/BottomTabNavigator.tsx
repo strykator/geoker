@@ -10,11 +10,13 @@ import HistoryStackNavigator from './HistoryStackNavigator'
 import {screenSize, colors, fontSize, fonts} from '../styles'
 import {HistoryStackParamList} from './HistoryStackNavigator'
 import Favorite from '../screens/Favorite'
+import MapScreen from '../screens/Map'
 
 type TabParamList = {
   Home: undefined
   History: HistoryStackParamList
   Favorite: undefined
+  Map: undefined
 }
 
 export type BottomTabProps = BottomTabScreenProps<TabParamList>
@@ -31,6 +33,8 @@ const BottomTabNavigator = () => {
 
             if (route.name === 'Home') {
               iconName = focused ? 'home' : 'home-outline'
+            } else if (route.name === 'Map') {
+              iconName = focused ? 'map' : 'map-outline'
             } else if (route.name === 'History') {
               iconName = focused ? 'list' : 'list-outline'
             } else if (route.name === 'Favorite') {
@@ -52,6 +56,7 @@ const BottomTabNavigator = () => {
           headerShown: false,
         })}>
         <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Map" component={MapScreen} />
         <Tab.Screen name="History" component={HistoryStackNavigator} />
         <Tab.Screen name="Favorite" component={Favorite} />
       </Tab.Navigator>

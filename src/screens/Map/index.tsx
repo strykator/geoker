@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, StyleSheet} from 'react-native'
+import {View, StyleSheet, SafeAreaView, Platform} from 'react-native'
 import {useDispatch, useSelector} from 'react-redux'
 import {RootState} from '../../store'
 import {
@@ -18,14 +18,15 @@ export default function MapScreen() {
   const coords = {latitude, longitude, heading, speed}
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Map coords={coords} />
-    </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: Platform.OS === 'android' ? 50 : 0,
   },
 })

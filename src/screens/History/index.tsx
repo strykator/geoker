@@ -1,5 +1,11 @@
 import React, {useCallback, useState} from 'react'
-import {View, SectionList, StyleSheet} from 'react-native'
+import {
+  View,
+  SectionList,
+  StyleSheet,
+  SafeAreaView,
+  Platform,
+} from 'react-native'
 import {styled} from 'styled-components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {useFocusEffect} from '@react-navigation/native'
@@ -128,7 +134,7 @@ const History = ({navigation}: HistoryListStackProps) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <SectionList
         sections={data}
         showsVerticalScrollIndicator={true}
@@ -160,7 +166,7 @@ const History = ({navigation}: HistoryListStackProps) => {
           titleSize={font.size.xs}
         />
       </FloatingBtn>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -169,7 +175,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: colors.background,
-    paddingTop: fullHeight * 0.01,
+    marginTop: Platform.OS === 'android' ? 50 : 0,
   },
   headerContainer: {
     flex: 1,

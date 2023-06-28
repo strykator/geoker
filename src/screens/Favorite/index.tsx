@@ -1,5 +1,12 @@
 import React, {useCallback, useState} from 'react'
-import {View, FlatList, StyleSheet, ListRenderItem} from 'react-native'
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  ListRenderItem,
+  SafeAreaView,
+  Platform,
+} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Toast from 'react-native-toast-message'
 import {useFocusEffect} from '@react-navigation/native'
@@ -86,13 +93,13 @@ const Favorite = () => {
   )
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={(item: IStorageItem) => `${item.timestamp}`}
       />
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -100,6 +107,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    marginTop: Platform.OS === 'android' ? 50 : 0,
   },
 })
 

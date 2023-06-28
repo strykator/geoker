@@ -43,7 +43,11 @@ const Map = ({coords, children}: IMap) => {
   }
 
   if (!latitude) {
-    return <Text title="Wating for GPS Coordinates..." />
+    return (
+      <Container>
+        <Text title="Wating for GPS Coordinates..." />
+      </Container>
+    )
   }
 
   const animateToRegion = () => {
@@ -94,7 +98,6 @@ const Map = ({coords, children}: IMap) => {
               title="Center"
               onPress={animateToRegion}
               bgColor={colors.navy}
-              roundness="half"
             />
           </ButtonContainer>
         </>
@@ -106,10 +109,7 @@ const Map = ({coords, children}: IMap) => {
 const Container = styled(View)`
   flex: 1;
   width: 100%;
-  height: ${screenSize.fullHeight * 0.4}px;
-  justify-content: center;
   align-items: center;
-  background-color: lightblue;
 `
 const StyledMap = styled(MapView)`
   width: 100%;

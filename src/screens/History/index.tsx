@@ -1,16 +1,17 @@
 import React, {useCallback, useState} from 'react'
-import {View, Text, SectionList, StyleSheet} from 'react-native'
+import {View, SectionList, StyleSheet} from 'react-native'
 import {styled} from 'styled-components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {useFocusEffect} from '@react-navigation/native'
 import Toast from 'react-native-toast-message'
 import SwipeableCard from './SwipeableCard'
 import {useActionSheet} from '@expo/react-native-action-sheet'
-import {fonts, fontSize, screenSize, colors} from '../../styles'
+import {fonts, fontSize, font, screenSize, colors} from '../../styles'
 import {STORAGE_HISTORY_KEY, TOAST_TYPES} from '../../utils/constants'
 import {formatData, IData, IStorageData} from '../../utils/helpers'
 import {HistoryListStackProps} from '../../navigators/HistoryStackNavigator'
 import Button from '../../components/Button'
+import Text from '../../components/Text'
 
 const {fullHeight, fullWidth} = screenSize
 const FLOAT_BUTTON_SIDE = fullWidth * 0.14
@@ -113,7 +114,7 @@ const History = ({navigation}: HistoryListStackProps) => {
   if (!data.length) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>No History Available</Text>
+        <Text title="No History Available" fontFamily={font.family.regular} />
       </View>
     )
   }
@@ -142,12 +143,22 @@ const History = ({navigation}: HistoryListStackProps) => {
         )}
         renderSectionHeader={({section: {title}}) => (
           <View style={styles.headerContainer}>
-            <Text style={styles.header}>{title}</Text>
+            <Text
+              title={title}
+              fontFamily={font.family.semiBold}
+              fontSize={font.size.xxl}
+            />
           </View>
         )}
       />
       <FloatingBtn>
-        <Button title="Clear" onPress={removeData} type="text" elevated />
+        <Button
+          title="Clear"
+          onPress={removeData}
+          type="text"
+          elevated
+          titleSize={font.size.xs}
+        />
       </FloatingBtn>
     </View>
   )

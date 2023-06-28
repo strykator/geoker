@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import {Text, StyleSheet} from 'react-native'
+import {StyleSheet} from 'react-native'
 import Animated, {
   Easing,
   withTiming,
   useSharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated'
-import {fonts, fontSize, screenSize, colors} from '../../styles'
+import {fonts, font, fontSize, screenSize, colors} from '../../styles'
 import {formatNumberDigits} from '../../utils/helpers'
+import Text from '../../components/Text'
 
 const {fullWidth} = screenSize
 const speedometerSide = fullWidth * 0.3
@@ -48,8 +49,12 @@ const Speedometer = ({speed = 0}: ISpeedometer) => {
 
   return (
     <Animated.View style={[styles.speedometer, animatedStyles]}>
-      <Text style={styles.speedometerText}>{formatNumberDigits(speed, 0)}</Text>
-      <Text style={styles.speedometerUnits}>mph</Text>
+      <Text
+        title={formatNumberDigits(speed, 0)}
+        fontFamily={font.family.bold}
+        fontSize={50}
+      />
+      <Text title="mph" fontFamily={font.family.bold} fontSize={font.size.xl} />
     </Animated.View>
   )
 }

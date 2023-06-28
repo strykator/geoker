@@ -20,4 +20,6 @@ export const colors = {
   bgDisabled: name.athens_gray,
   textDisabled: name.heather,
   black: `#000000`,
+  text: '#444445',
+  textWeak: '#797979',
 }

@@ -1,16 +1,19 @@
 import React, {useRef} from 'react'
-import {StyleSheet, View, Text, Alert, I18nManager} from 'react-native'
+import {StyleSheet, View, Alert, I18nManager} from 'react-native'
 import Animated, {FadeInDown} from 'react-native-reanimated'
 import {RectButton} from 'react-native-gesture-handler'
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
-import {fonts, fontSize, screenSize, colors} from '../../styles'
+import {font, screenSize, colors} from '../../styles'
 import {IStorageData} from '../../utils/helpers'
 import Button from '../../components/Button'
+import Text from '../../components/Text'
 
 const {fullHeight, fullWidth} = screenSize
 const ICON_SIDE = fullWidth * 0.08
+const titleFontFamily = font.family.medium
+const valueFontFamily = font.family.light
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
@@ -68,27 +71,33 @@ const SwipeableCard = ({item, removeItem, showLocation}: ISwipeableCard) => {
           entering={FadeInDown.duration(400)}
           style={styles.container}>
           <View style={styles.left}>
-            <Text style={styles.title}>Start:</Text>
-            <Text style={styles.title}>Stop:</Text>
-            <Text style={styles.title}>Total:</Text>
-            <Text style={styles.title}>Distance:</Text>
-            <Text style={styles.title}>Locations:</Text>
+            <Text title="Start:" fontFamily={titleFontFamily} />
+            <Text title="Stop:" fontFamily={titleFontFamily} />
+            <Text title="Total:" fontFamily={titleFontFamily} />
+            <Text title="Distance:" fontFamily={titleFontFamily} />
+            <Text title="Locations:" fontFamily={titleFontFamily} />
           </View>
           <View style={styles.right}>
-            <Text style={styles.title}>
-              {moment(item.start).format('hh:mm:ss a')}
-            </Text>
-            <Text style={styles.title}>
-              {moment(item.stop).format('hh:mm:ss a')}
-            </Text>
-            <Text style={styles.title}>
-              {moment.utc(item.stop - item.start).format('HH:mm:ss')}
-            </Text>
-            <Text style={styles.title}>{item.mile.toFixed(1)} miles</Text>
+            <Text
+              title={moment(item.start).format('hh:mm:ss a')}
+              fontFamily={valueFontFamily}
+            />
+            <Text
+              title={moment(item.stop).format('hh:mm:ss a')}
+              fontFamily={valueFontFamily}
+            />
+            <Text
+              title={moment.utc(item.stop - item.start).format('HH:mm:ss')}
+              fontFamily={valueFontFamily}
+            />
+            <Text
+              title={`${item.mile.toFixed(1)} miles`}
+              fontFamily={valueFontFamily}
+            />
             <Button
               title="Show"
               onPress={() => showLocation()}
-              width={fullWidth * 0.2}
+              width={fullWidth * 0.16}
               bgColor={colors.sapphire}
             />
           </View>
@@ -122,10 +131,6 @@ const styles = StyleSheet.create({
     width: ICON_SIDE,
     marginHorizontal: fullWidth * 0.02,
     height: ICON_SIDE,
-  },
-  title: {
-    fontSize: fontSize.s,
-    fontFamily: fonts.mediumItalic,
   },
   left: {
     alignItems: 'flex-start',

@@ -7,7 +7,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Home from '../screens/Home'
 import HistoryStackNavigator from './HistoryStackNavigator'
-import {screenSize, colors, fontSize, fonts} from '../styles'
+import {screenSize, colors, font} from '../styles'
 import {HistoryStackParamList} from './HistoryStackNavigator'
 import Favorite from '../screens/Favorite'
 import MapScreen from '../screens/Map'
@@ -47,11 +47,11 @@ const BottomTabNavigator = () => {
           tabBarInactiveTintColor: colors.slate,
           tabBarStyle: {
             backgroundColor: colors.background,
-            height: screenSize.fullHeight * 0.15,
+            height: screenSize.fullHeight * 0.06,
           },
           tabBarLabelStyle: {
-            fontSize: fontSize.s,
-            fontFamily: fonts.medium,
+            fontSize: font.size.xs,
+            fontFamily: font.family.regular,
           },
           headerShown: false,
         })}>

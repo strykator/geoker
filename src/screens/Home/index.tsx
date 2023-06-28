@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {View, Text} from 'react-native'
+import {View} from 'react-native'
 import styled from 'styled-components'
 import getDistance from 'geolib/es/getDistance'
 import * as Location from 'expo-location'
@@ -11,6 +11,7 @@ import Toast from 'react-native-toast-message'
 import {useDispatch} from 'react-redux'
 import {updateGeo} from '../../store/geo/geoSlice'
 import Button from '../../components/Button'
+import Text from '../../components/Text'
 import {colors, screenSize} from '../../styles'
 import {
   TASK_NAME,
@@ -318,7 +319,7 @@ const Home = () => {
           bgColor={colors.success}
           width={fullWidth * 0.25}
         />
-        <Text>{formatNumberDigits(multiplier, 1)}</Text>
+        <Text title={formatNumberDigits(multiplier, 1)} />
         <Button
           title="Decrease"
           onPress={decreaseSpeedMutiplier}
@@ -368,8 +369,8 @@ const ButtonGroup = styled(View)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: ${fullHeight * 0.02}px;
-  margin-bottom: ${fullHeight * 0.02}px;
+  margin-top: ${fullHeight * 0.01}px;
+  margin-bottom: ${fullHeight * 0.01}px;
 `
 
 export default Home

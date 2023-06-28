@@ -1,9 +1,23 @@
 import React, {useEffect, useCallback} from 'react'
 import {SafeAreaView, StyleSheet} from 'react-native'
+import * as SplashScreen from 'expo-splash-screen'
+import {
+  useFonts,
+  Poppins_100Thin,
+  Poppins_200ExtraLight,
+  Poppins_300Light,
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+  Poppins_800ExtraBold,
+  Poppins_800ExtraBold_Italic,
+  Poppins_900Black,
+  Poppins_900Black_Italic,
+} from '@expo-google-fonts/poppins'
 import BottomTabNavigator from './src/navigators/BottomTabNavigator'
 import {ActionSheetProvider} from '@expo/react-native-action-sheet'
 import Toast, {BaseToast} from 'react-native-toast-message'
-import {useFonts} from 'expo-font'
 import {StatusBar} from 'expo-status-bar'
 import {Provider} from 'react-redux'
 import {store} from './src/store'
@@ -61,6 +75,8 @@ const toastConfig = {
   ),
 }
 
+SplashScreen.preventAutoHideAsync()
+
 const App = () => {
   const [fontsLoaded] = useFonts({
     'Trirong-Thin': require('./assets/fonts/Trirong-Thin.ttf'),
@@ -80,11 +96,22 @@ const App = () => {
     'Trirong-ExtraBoldItalic': require('./assets/fonts/Trirong-ExtraBoldItalic.ttf'),
     'Trirong-Black': require('./assets/fonts/Trirong-Black.ttf'),
     'Trirong-BlackItalic': require('./assets/fonts/Trirong-BlackItalic.ttf'),
+    Poppins_100Thin,
+    Poppins_200ExtraLight,
+    Poppins_300Light,
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
+    Poppins_800ExtraBold,
+    Poppins_800ExtraBold_Italic,
+    Poppins_900Black,
+    Poppins_900Black_Italic,
   })
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      //await SplashScreen.hideAsync();
+      await SplashScreen.hideAsync()
     }
   }, [fontsLoaded])
 

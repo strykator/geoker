@@ -1,7 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react'
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View} from 'react-native'
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps'
 import {styled} from 'styled-components'
+import Text from '../Text'
 //import MapViewDirections from 'react-native-maps-directions'
 //import Config from 'react-native-config'
 //import * as Location from 'expo-location'
@@ -42,7 +43,7 @@ const Map = ({coords, children}: IMap) => {
   }
 
   if (!latitude) {
-    return <Text>Wating for GPS Coordinates...</Text>
+    return <Text title="Wating for GPS Coordinates..." />
   }
 
   const animateToRegion = () => {

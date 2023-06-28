@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, StyleSheet, TextInput} from 'react-native'
+import {View, StyleSheet, TextInput} from 'react-native'
 import Modal from 'react-native-modal'
 import Toast from 'react-native-toast-message'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Location from 'expo-location'
 import Button from '../../components/Button'
-import {fonts, colors, screenSize, fontSize} from '../../styles'
+import Text from '../../components/Text'
+import {colors, screenSize, font} from '../../styles'
 import {getAddressFromReversedGeocode} from '../../utils/helpers'
 import {STORAGE_FAVORITE_KEY, TOAST_TYPES} from '../../utils/constants'
 import {getCurrentLocation} from './utils'
-import {ColorSpace} from 'react-native-reanimated'
 
 const {fullHeight, fullWidth} = screenSize
 
@@ -140,21 +140,24 @@ const FavoriteModal = ({toggleModal, isModalVisible}: IFavoriteModal) => {
           placeholder="My Favorite Place"
         />
         <View style={styles.infoContainer}>
-          <Text style={styles.text}>{`Latitude: ${
-            snapshotLocation.latitude || ''
-          }`}</Text>
-          <Text style={styles.text}>{`Longitude: ${
-            snapshotLocation.longitude || ''
-          }`}</Text>
-          <Text style={styles.text}>
-            {`Near: ${snapshotLocation.address || ''}`}
-          </Text>
+          <Text
+            title={`Latitude: ${snapshotLocation.latitude || ''}`}
+            titleColor={colors.snow}
+          />
+          <Text
+            title={`Longitude: ${snapshotLocation.longitude || ''}`}
+            titleColor={colors.snow}
+          />
+          <Text
+            title={`Near: ${snapshotLocation.address || ''}`}
+            titleColor={colors.snow}
+          />
         </View>
         <Button
           title="Save"
           onPress={storeFavoriteLocation}
           disabled={!title}
-          width={fullWidth * 0.25}
+          width={fullWidth * 0.4}
           bgColor={colors.snow}
           titleColor={colors.sapphire}
         />
@@ -165,7 +168,7 @@ const FavoriteModal = ({toggleModal, isModalVisible}: IFavoriteModal) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: fullHeight * 0.65,
+    height: fullHeight * 0.34,
     width: '90%',
     alignSelf: 'center',
     alignItems: 'center',
@@ -181,25 +184,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     backgroundColor: colors.snow,
-    fontFamily: fonts.light,
-    fontSize: fontSize.s,
-  },
-  text: {
-    fontFamily: fonts.bold,
-    fontSize: fontSize.s,
-    color: colors.snow,
+    fontFamily: font.family.regular,
+    fontSize: font.size.s,
   },
   infoContainer: {
     width: '85%',
-    height: fullHeight * 0.3,
-  },
-  button: {
-    backgroundColor: colors.snow,
-    width: fullWidth * 0.25,
-  },
-  saveText: {
-    fontFamily: fonts.bold,
-    color: colors.sapphire,
+    height: fullHeight * 0.12,
   },
 })
 

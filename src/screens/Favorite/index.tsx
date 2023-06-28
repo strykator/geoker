@@ -1,11 +1,12 @@
 import React, {useCallback, useState} from 'react'
-import {View, Text, FlatList, StyleSheet, ListRenderItem} from 'react-native'
+import {View, FlatList, StyleSheet, ListRenderItem} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Toast from 'react-native-toast-message'
 import {useFocusEffect} from '@react-navigation/native'
 import {TOAST_TYPES, STORAGE_FAVORITE_KEY} from '../../utils/constants'
-import {screenSize, fonts, fontSize} from '../../styles'
+import {screenSize, fonts, fontSize, font} from '../../styles'
 import SwipeableCard from './SwipeableCard'
+import Text from '../../components/Text'
 
 const {fullHeight} = screenSize
 
@@ -72,7 +73,10 @@ const Favorite = () => {
   if (!data || data.length === 0) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>No Favorite Place Available</Text>
+        <Text
+          title="No Favorite Place Available"
+          fontFamily={font.family.regular}
+        />
       </View>
     )
   }
@@ -95,12 +99,7 @@ const Favorite = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: fontSize.s,
-    fontFamily: fonts.mediumItalic,
   },
 })
 

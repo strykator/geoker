@@ -13,6 +13,7 @@ interface IButton {
   children?: React.ReactNode
   bgColor?: string
   titleColor?: string
+  titleSize?: number
   disabled?: boolean
   elevated?: boolean
   width?: number
@@ -27,6 +28,7 @@ export default function Button({
   children,
   bgColor,
   titleColor,
+  titleSize,
   disabled,
   elevated,
   width,
@@ -38,7 +40,10 @@ export default function Button({
   const renderContent = () => {
     return (
       <ContentContainer>
-        <Title titleColor={titleColor} disabled={disabled}>
+        <Title
+          titleColor={titleColor}
+          disabled={disabled}
+          titleSize={titleSize}>
           {title}
         </Title>
       </ContentContainer>
@@ -113,11 +118,16 @@ const ContentContainer = styled(View)`
   align-items: center;
   background-color: transparent;
 `
-const Title = styled(Text)<{titleColor?: string; disabled?: boolean}>`
+const Title = styled(Text)<{
+  titleColor?: string
+  titleSize?: number
+  disabled?: boolean
+}>`
   color: ${({titleColor, disabled}) => {
     if (disabled) return colors.textDisabled
     return titleColor ? titleColor : colors.background
   }};
-  font-size: ${font.size.xxxl}px;
-  font-family: ${font.family.bold};
+  font-size: ${({titleSize}) =>
+    titleSize ? `${titleSize}px` : `${font.size.s}px`};
+  font-family: ${font.family.medium};
 `

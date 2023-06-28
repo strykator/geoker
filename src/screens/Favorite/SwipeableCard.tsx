@@ -1,24 +1,19 @@
 import React, {useRef} from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  Alert,
-  I18nManager,
-  Platform,
-} from 'react-native'
+import {StyleSheet, View, Alert, I18nManager, Platform} from 'react-native'
 import Animated, {FadeInDown} from 'react-native-reanimated'
 import {RectButton} from 'react-native-gesture-handler'
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
 import * as Linking from 'expo-linking'
-import {fonts, fontSize, screenSize, colors} from '../../styles'
+import {screenSize, colors, font} from '../../styles'
 import Button from '../../components/Button'
+import Text from '../../components/Text'
 import {IStorageItem} from '.'
 
 const {fullHeight, fullWidth} = screenSize
 const ICON_SIDE = fullWidth * 0.08
+const valueFontFamily = font.family.light
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
@@ -102,14 +97,26 @@ const SwipeableCard = ({item, removeItem}: ISwipeableCard) => {
           entering={FadeInDown.duration(400)}
           style={styles.container}>
           <View style={styles.left}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.locationText}>
-              {`${item.latitude}, ${item.longitude}`}
-            </Text>
-            <Text style={styles.locationText}>{item.address}</Text>
-            <Text style={styles.dateText}>
-              {moment(item.timestamp).format('MM-DD-YYYY')}
-            </Text>
+            <Text
+              title={item.title}
+              fontFamily={font.family.bold}
+              titleColor={colors.snow}
+            />
+            <Text
+              title={`${item.latitude}, ${item.longitude}`}
+              fontFamily={valueFontFamily}
+              titleColor={colors.snow}
+            />
+            <Text
+              title={item.address}
+              fontFamily={valueFontFamily}
+              titleColor={colors.snow}
+            />
+            <Text
+              title={moment(item.timestamp).format('MM-DD-YYYY')}
+              fontFamily={valueFontFamily}
+              titleColor={colors.snow}
+            />
           </View>
           <View style={styles.right}>
             <Button
@@ -156,27 +163,12 @@ const styles = StyleSheet.create({
     marginHorizontal: fullWidth * 0.02,
     height: ICON_SIDE,
   },
-  title: {
-    fontSize: fontSize.s,
-    fontFamily: fonts.bold,
-    color: colors.snow,
-  },
   left: {
     alignSelf: 'flex-start',
     marginLeft: fullWidth * 0.05,
   },
   right: {
     alignSelf: 'flex-end',
-  },
-  locationText: {
-    fontSize: fontSize.xs,
-    fontFamily: fonts.lightItalic,
-    color: colors.snow,
-  },
-  dateText: {
-    fontSize: fontSize.xxs,
-    fontFamily: fonts.extraLight,
-    color: colors.snow,
   },
 })
 

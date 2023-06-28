@@ -87,9 +87,9 @@ const SwipeableCard = ({item, removeItem, showLocation}: ISwipeableCard) => {
             <Text style={styles.title}>{item.mile.toFixed(1)} miles</Text>
             <Button
               title="Show"
-              onPress={showLocation}
-              style={styles.showBtn}
-              textStyle={styles.showBtnText}
+              onPress={() => showLocation()}
+              width={fullWidth * 0.2}
+              bgColor={colors.sapphire}
             />
           </View>
         </Animated.View>
@@ -132,14 +132,6 @@ const styles = StyleSheet.create({
   },
   right: {
     alignItems: 'flex-end',
-  },
-  showBtn: {
-    padding: 2,
-    width: fullWidth * 0.2,
-    backgroundColor: colors.sapphire,
-  },
-  showBtnText: {
-    color: colors.snow,
   },
 })
 

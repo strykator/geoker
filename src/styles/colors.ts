@@ -1,3 +1,8 @@
+const name = {
+  athens_gray: '#E4E7ED',
+  heather: '#BBC3D1',
+}
+
 export const colors = {
   background: '#ededed',
   card: '#eac7a6',
@@ -12,4 +17,7 @@ export const colors = {
   snow: '#FFFDF8',
   rose: '#FF005E',
   sapphire: '#0f52ba',
+  bgDisabled: name.athens_gray,
+  textDisabled: name.heather,
+  black: `#000000`,
 }

@@ -1,11 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps'
+import {styled} from 'styled-components'
 //import MapViewDirections from 'react-native-maps-directions'
 //import Config from 'react-native-config'
 //import * as Location from 'expo-location'
 import {screenSize} from '../../styles/size'
 import Button from '../Button'
+import {colors} from '../../styles'
 
 interface IMap {
   coords: {
@@ -62,16 +64,15 @@ const Map = ({coords, children}: IMap) => {
   }
 
   return (
-    <View style={styles.container}>
+    <Container>
       {region && (
         <>
-          <MapView
+          <StyledMap
             ref={mapRef}
             initialRegion={region}
             showsUserLocation
             followsUserLocation
             onRegionChange={handleRegionChange}
-            style={styles.map}
             provider={PROVIDER_GOOGLE}>
             <Marker coordinate={region} />
             {/*navigating && (
@@ -86,33 +87,37 @@ const Map = ({coords, children}: IMap) => {
                 strokeColor="hotpink"
               />
           )*/}
-          </MapView>
-          <Button title="CENTER" onPress={animateToRegion} style={styles.btn} />
+          </StyledMap>
+          <ButtonContainer>
+            <Button
+              title="Center"
+              onPress={animateToRegion}
+              bgColor={colors.navy}
+              roundness="half"
+            />
+          </ButtonContainer>
         </>
       )}
-    </View>
+    </Container>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    height: screenSize.fullHeight * 0.4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightblue',
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-  btn: {
-    position: 'absolute',
-    bottom: screenSize.fullWidth * 0.1,
-    left: screenSize.fullWidth * 0.1,
-    backgroundColor: 'cyan',
-  },
-})
+const Container = styled(View)`
+  flex: 1;
+  width: 100%;
+  height: ${screenSize.fullHeight * 0.4}px;
+  justify-content: center;
+  align-items: center;
+  background-color: lightblue;
+`
+const StyledMap = styled(MapView)`
+  width: 100%;
+  height: 100%;
+`
+const ButtonContainer = styled(View)`
+  position: absolute;
+  bottom: ${screenSize.fullWidth * 0.1}px;
+  right: ${screenSize.fullWidth * 0.1}px;
+`
 
 export default Map

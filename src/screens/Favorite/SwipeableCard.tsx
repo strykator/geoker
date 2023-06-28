@@ -114,6 +114,8 @@ const SwipeableCard = ({item, removeItem}: ISwipeableCard) => {
           <View style={styles.right}>
             <Button
               title="Navigate"
+              bgColor={colors.snow}
+              titleColor={colors.sapphire}
               onPress={() =>
                 navigate({
                   title: item.title,
@@ -121,8 +123,6 @@ const SwipeableCard = ({item, removeItem}: ISwipeableCard) => {
                   longitude: item.longitude,
                 })
               }
-              style={styles.navigateBtn}
-              textStyle={styles.btnText}
             />
           </View>
         </Animated.View>
@@ -167,14 +167,6 @@ const styles = StyleSheet.create({
   },
   right: {
     alignSelf: 'flex-end',
-  },
-  navigateBtn: {
-    padding: 2,
-    width: fullWidth * 0.2,
-    backgroundColor: colors.snow,
-  },
-  btnText: {
-    color: colors.sapphire,
   },
   locationText: {
     fontSize: fontSize.xs,

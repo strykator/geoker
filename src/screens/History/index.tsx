@@ -1,11 +1,6 @@
 import React, {useCallback, useState} from 'react'
-import {
-  View,
-  Text,
-  SectionList,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native'
+import {View, Text, SectionList, StyleSheet} from 'react-native'
+import {styled} from 'styled-components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {useFocusEffect} from '@react-navigation/native'
 import Toast from 'react-native-toast-message'
@@ -15,6 +10,7 @@ import {fonts, fontSize, screenSize, colors} from '../../styles'
 import {STORAGE_HISTORY_KEY, TOAST_TYPES} from '../../utils/constants'
 import {formatData, IData, IStorageData} from '../../utils/helpers'
 import {HistoryListStackProps} from '../../navigators/HistoryStackNavigator'
+import Button from '../../components/Button'
 
 const {fullHeight, fullWidth} = screenSize
 const FLOAT_BUTTON_SIDE = fullWidth * 0.14
@@ -150,9 +146,9 @@ const History = ({navigation}: HistoryListStackProps) => {
           </View>
         )}
       />
-      <TouchableOpacity style={styles.floatingBtn} onPress={removeData}>
-        <Text style={styles.btnText}>Clear</Text>
-      </TouchableOpacity>
+      <FloatingBtn>
+        <Button title="Clear" onPress={removeData} type="text" elevated />
+      </FloatingBtn>
     </View>
   )
 }
@@ -177,26 +173,18 @@ const styles = StyleSheet.create({
     fontSize: fontSize.s,
     fontFamily: fonts.mediumItalic,
   },
-  floatingBtn: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: FLOAT_BUTTON_SIDE,
-    height: FLOAT_BUTTON_SIDE,
-    borderRadius: FLOAT_BUTTON_SIDE / 2,
-    backgroundColor: colors.warning,
-    bottom: fullHeight * 0.05,
-    right: fullWidth * 0.05,
-    shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 0.3,
-    shadowRadius: FLOAT_BUTTON_SIDE / 2,
-    elevation: 2,
-  },
-  btnText: {
-    color: colors.background,
-    fontSize: fontSize.s,
-    fontFamily: fonts.mediumItalic,
-  },
 })
+
+const FloatingBtn = styled(View)`
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: ${FLOAT_BUTTON_SIDE}px;
+  height: ${FLOAT_BUTTON_SIDE}px;
+  border-radius: ${FLOAT_BUTTON_SIDE / 2}px;
+  background-color: ${colors.warning};
+  bottom: ${fullHeight * 0.05}px;
+  right: ${fullWidth * 0.05}px;
+`
 
 export default History

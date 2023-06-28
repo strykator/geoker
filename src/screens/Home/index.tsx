@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {View, StyleSheet, Text} from 'react-native'
+import {View, Text} from 'react-native'
+import styled from 'styled-components'
 import getDistance from 'geolib/es/getDistance'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager'
@@ -10,7 +11,7 @@ import Toast from 'react-native-toast-message'
 import {useDispatch} from 'react-redux'
 import {updateGeo} from '../../store/geo/geoSlice'
 import Button from '../../components/Button'
-import {fonts, colors, screenSize} from '../../styles'
+import {colors, screenSize} from '../../styles'
 import {
   TASK_NAME,
   STORAGE_HISTORY_KEY,
@@ -304,86 +305,71 @@ const Home = () => {
   const decreaseSpeedMutiplier = () => setMultiplier(multiplier - 0.1)
   // <Text>{JSON.stringify(update || 'nothing')}</Text>
   return (
-    <View style={styles.container}>
+    <Container>
       <Speedometer speed={getSpeed()} />
       <LocationDetails
         location={location.current}
         distance={distance.current}
       />
-      <View style={styles.btnGroup}>
+      <ButtonGroup>
         <Button
-          title="increase"
+          title="Increase"
           onPress={increaseSpeedMutiplier}
-          style={styles.startBtn}
+          bgColor={colors.success}
+          width={fullWidth * 0.25}
         />
         <Text>{formatNumberDigits(multiplier, 1)}</Text>
         <Button
-          title="decrease"
+          title="Decrease"
           onPress={decreaseSpeedMutiplier}
-          style={styles.stopBtn}
+          bgColor={colors.tomato}
+          width={fullWidth * 0.25}
         />
-      </View>
-      <View style={styles.btnGroup}>
+      </ButtonGroup>
+      <ButtonGroup>
         <Button
           title="Start"
           onPress={startBackgroundTracking}
-          style={styles.startBtn}
+          bgColor={colors.success}
           disabled={!stop}
+          width={fullWidth * 0.25}
         />
         <Button
           title="Stop"
           onPress={stopBackgroundTracking}
-          style={styles.stopBtn}
+          bgColor={colors.tomato}
           disabled={stop}
+          width={fullWidth * 0.25}
         />
         <Button
           title="Favorite"
           onPress={toggleModal}
-          style={styles.favoriteBtn}
-          textStyle={styles.favoriteText}
+          bgColor={colors.sapphire}
+          width={fullWidth * 0.25}
+          elevated
         />
-      </View>
+      </ButtonGroup>
       <FavoriteModal
         toggleModal={toggleModal}
         isModalVisible={isModalVisible}
       />
-    </View>
+    </Container>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.background,
-  },
-  text: {
-    fontFamily: fonts.mediumItalic,
-  },
-  btnGroup: {
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: fullHeight * 0.02,
-  },
-  startBtn: {
-    backgroundColor: colors.success,
-    width: fullWidth * 0.25,
-  },
-  stopBtn: {
-    backgroundColor: colors.tomato,
-    width: fullWidth * 0.25,
-  },
-  favoriteBtn: {
-    backgroundColor: colors.sapphire,
-    width: fullWidth * 0.25,
-  },
-  favoriteText: {
-    color: colors.snow,
-    fontFamily: fonts.bold,
-  },
-})
+const Container = styled(View)`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: ${colors.background};
+`
+const ButtonGroup = styled(View)`
+  width: 90%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: ${fullHeight * 0.02}px;
+  margin-bottom: ${fullHeight * 0.02}px;
+`
 
 export default Home

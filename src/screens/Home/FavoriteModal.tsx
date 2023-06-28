@@ -9,6 +9,7 @@ import {fonts, colors, screenSize, fontSize} from '../../styles'
 import {getAddressFromReversedGeocode} from '../../utils/helpers'
 import {STORAGE_FAVORITE_KEY, TOAST_TYPES} from '../../utils/constants'
 import {getCurrentLocation} from './utils'
+import {ColorSpace} from 'react-native-reanimated'
 
 const {fullHeight, fullWidth} = screenSize
 
@@ -152,9 +153,10 @@ const FavoriteModal = ({toggleModal, isModalVisible}: IFavoriteModal) => {
         <Button
           title="Save"
           onPress={storeFavoriteLocation}
-          style={styles.button}
           disabled={!title}
-          textStyle={styles.saveText}
+          width={fullWidth * 0.25}
+          bgColor={colors.snow}
+          titleColor={colors.sapphire}
         />
       </View>
     </Modal>

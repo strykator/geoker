@@ -153,11 +153,13 @@ const FavoriteModal = ({toggleModal, isModalVisible}: IFavoriteModal) => {
             titleColor={colors.snow}
           />
         </View>
+        <View style={styles.space} />
         <Button
           title="Save"
           onPress={storeFavoriteLocation}
           disabled={!title}
           width={fullWidth * 0.4}
+          height={fullHeight * 0.05}
           bgColor={colors.snow}
           titleColor={colors.sapphire}
         />
@@ -190,6 +192,10 @@ const styles = StyleSheet.create({
   infoContainer: {
     width: '85%',
     height: fullHeight * 0.12,
+  },
+  space: {
+    height: fullHeight * 0.02,
+    width: '100%',
   },
 })
 

@@ -98,6 +98,7 @@ const Map = ({coords, children}: IMap) => {
               title="Center"
               onPress={animateToRegion}
               bgColor={colors.navy}
+              height={screenSize.fullHeight * 0.05}
             />
           </ButtonContainer>
         </>

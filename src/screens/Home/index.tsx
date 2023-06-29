@@ -58,7 +58,7 @@ const Home = () => {
   const [isModalVisible, setModalVisible] = useState(false)
   const [startLocation, setStartLocation] = useState<Location.LocationObject>()
   const [intervalId, setIntervalId] = useState<any>(null)
-  const [multiplier, setMultiplier] = useState<number>(2)
+  const [multiplier, setMultiplier] = useState<number>(2.2)
   const location = useRef<Ilocation | null>(null)
   const distance = useRef(0)
   // const appState = useSelector((state: RootState) => state)
@@ -302,9 +302,7 @@ const Home = () => {
     if (stop || !location.current?.coords?.speed) return 0
     return location.current?.coords?.speed * multiplier
   }
-  const increaseSpeedMutiplier = () => setMultiplier(multiplier + 0.1)
-  const decreaseSpeedMutiplier = () => setMultiplier(multiplier - 0.1)
-  // <Text>{JSON.stringify(update || 'nothing')}</Text>
+
   return (
     <Container>
       <Speedometer speed={getSpeed()} />
@@ -314,26 +312,12 @@ const Home = () => {
       />
       <ButtonGroup>
         <Button
-          title="Increase"
-          onPress={increaseSpeedMutiplier}
-          bgColor={colors.success}
-          width={fullWidth * 0.25}
-        />
-        <Text title={formatNumberDigits(multiplier, 1)} />
-        <Button
-          title="Decrease"
-          onPress={decreaseSpeedMutiplier}
-          bgColor={colors.tomato}
-          width={fullWidth * 0.25}
-        />
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button
           title="Start"
           onPress={startBackgroundTracking}
           bgColor={colors.success}
           disabled={!stop}
           width={fullWidth * 0.25}
+          height={fullHeight * 0.05}
         />
         <Button
           title="Stop"
@@ -341,12 +325,14 @@ const Home = () => {
           bgColor={colors.tomato}
           disabled={stop}
           width={fullWidth * 0.25}
+          height={fullHeight * 0.05}
         />
         <Button
           title="Favorite"
           onPress={toggleModal}
           bgColor={colors.sapphire}
           width={fullWidth * 0.25}
+          height={fullHeight * 0.05}
           elevated
         />
       </ButtonGroup>
@@ -369,7 +355,7 @@ const ButtonGroup = styled(View)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: ${fullHeight * 0.01}px;
+  margin-top: ${fullHeight * 0.03}px;
   margin-bottom: ${fullHeight * 0.01}px;
 `
 

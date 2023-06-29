@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Platform} from 'react-native'
 import Animated, {
   Easing,
   withTiming,
@@ -39,11 +39,25 @@ const Speedometer = ({speed = 0}: ISpeedometer) => {
       backgroundColor = colors.warning
     }
 
+    const shadowStyle =
+      Platform.OS === 'ios'
+        ? {
+            shadowColor: colors.black,
+            shadowOffset: {
+              width: 0 + animatedValue.value,
+              height: 2 + animatedValue.value,
+            },
+            shadowOpacity: 0.3,
+            shadowRadius: 5 + animatedValue.value,
+          }
+        : {elevation: 2 + animatedValue.value}
+
     return {
       width: speedometerSide + animatedValue.value / 1.1,
       height: speedometerSide + animatedValue.value / 1.1,
       borderRadius: speedometerSide / 2 + animatedValue.value / 1.1,
       backgroundColor,
+      ...shadowStyle,
     }
   })
 
